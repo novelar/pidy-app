@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "echo Starting... && ng serve",
-	"build": "ng build --prod --aot"
+	"build": "ng build --prod --aot",
     "build:ssr": "ng run pidy:server:dev",
     "test": "ng test",
     "lint": "ng lint",
