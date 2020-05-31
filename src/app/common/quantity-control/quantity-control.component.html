@@ -1,0 +1,7 @@
+<div class="number">
+  <input class="input-style" type="number" #quantity (change)="onChange.emit($event)">
+</div>
+<div class="actions">
+  <div (click)="plusOne()" class="noselect">+</div>
+  <div (click)="minusOne()" class="noselect">-</div>
+</div>

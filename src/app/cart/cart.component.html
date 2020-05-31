@@ -1,0 +1,86 @@
+<div class="cart-page-container">
+  <div class="cart-page-header">
+    <h2>Tu carrito</h2>
+  </div>
+  <div class="cart-page-content" *ngIf="cartList.length > 0">
+    <div class="cart-item-header row">
+      <div class="cart-item-cell col-5"><span>Producto</span></div>
+      <div class="cart-item-cell col-3"><span>Cantidad</span></div>
+      <div class="cart-item-cell col-2"><span>Total</span></div>
+      <div class="cart-item-cell col-2"><span></span></div>
+    </div>
+    <div class="row" *ngFor="let cart of cartList">
+      <div class="col-12 col-md-5">
+        <div class="cart-item-info">
+          <div class="cart-item-title">{{cart.product.name}}</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="actions actions-minus">
+          <div (click)="minusOne(cart.product)" class="noselect">-</div>
+        </div>
+        <div class="number">
+          <label class="input-style">{{cart.product.quantity}}</label>
+        </div>
+        <div class="actions actions-plus">
+          <div (click)="plusOne(cart.product)" class="noselect">+</div>
+        </div>
+      </div>
+      <div class="col-3 col-md-2">
+        <div class="item-price">
+          {{cart.product.quantity*cart.product.price | currency }}
+        </div>
+      </div>
+      <div class="col-3 col-md-2">
+        <div class="item-remove" (click)="removeFromCart(cart.product)">
+          <svg class="bi bi-trash" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+          </svg>
+        </div>
+      </div>
+      <hr />
+    </div>
+    <div class="row cart-total">
+      <div class="col-6 cart-total-label">
+        Total
+      </div>
+      <div class="col-6 cart-total-value cart-total-price">
+        {{totalPrice | currency}}
+      </div>
+    </div>
+    <div class="cart-buttons">
+      <a routerLink="/mystore">Seguir comprando</a>
+    </div>
+    <form [formGroup]="checkoutForm" (ngSubmit)="sendOrder(checkoutForm.value)">
+      <div class="col-12 col-md-7 cart-input input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroup-name">Nombre</span>
+        </div>
+        <input type="text" class="form-control" formControlName="name" aria-describedby="inputGroup-name">
+      </div>
+      <div>
+        <label class="radio-inline"><input [(ngModel)]="isDelivery" type="radio" [value]="0" name="takeaway" [ngModelOptions]="{standalone: true}">Takeaway</label>
+        <label class="radio-inline"><input [(ngModel)]="isDelivery" type="radio" [value]="1" name="delivery" [ngModelOptions]="{standalone: true}" (change)="deleteAddress()">Delivery</label>
+      </div>
+      <br />
+      <div *ngIf="isDelivery == 1" class="col-12 col-md-8 cart-input input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroup-address">Dirección</span>
+        </div>
+        <input type="text" class="form-control" formControlName="address" aria-describedby="inputGroup-address">
+      </div>
+      <div *ngIf="isDelivery == 0" class="col-12 col-md-8 cart-input input-group mb-3">
+        <label>La dirección del local es: <b>{{client.address}}</b></label>
+      </div>
+
+      <button type="submit" class="checkout-button button color-pidy-2 button-large">Enviar ({{totalPrice | currency}}) <img height="25" src="assets/whatsapp-white.png" /></button>
+
+    </form>
+  </div>
+  <div class="cart-page-content" *ngIf="cartList.length == 0">
+    <h4>Tu carrito está vacío.</h4>
+    <a routerLink="/mystore">Seguir comprando</a>
+  </div>
+
+</div>

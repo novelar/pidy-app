@@ -1,0 +1,57 @@
+<h2>Hola! Qué necesitás?</h2>
+<button type="button" class="btn btn-outline-dark" data-toggle="button" aria-pressed="false" autocomplete="off" *ngFor="let category of categories; index as i" [attr.id]="'option' + i" (click)="selectCategory(category)">{{category.name}}</button>
+
+<hr />
+
+<div *ngIf="selectedCategory" class="header-image">
+  <div class="header-block">
+    <div class="header-text color-pidy-2">
+      <div class="header-text-title">{{selectedCategory.name}}</div>
+    </div>
+  </div>
+</div>
+
+<!--<product *ngFor="let product of productsToDisplay" [product]="product" [editable]="false"></product>-->
+<div class="layout-container">
+  <div class="product-grid row">
+    <div class="col-md-6 col-sm-6" *ngFor="let product of productsToDisplay">
+      <div class="row">
+        <div class="col-8 product-title-description">
+          <h1 class="product-title">{{product.name}}</h1>
+          <div class="product-description">{{product.description}}</div>
+        </div>
+        <div class="col-4 product-image-container">
+          <img src='assets/{{product.image}}' class="product-image" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="product-price col-4">{{product.price | currency }}</div>
+        <div class="col-8 float-right">
+          <div class="float-right" *ngIf="product.quantity > 0">
+            <div class="actions actions-minus">
+              <div (click)="minusOne(product)" class="noselect">-</div>
+            </div>
+            <div class="number">
+              <label class="input-style">{{product.quantity}}</label>
+            </div>
+            <div class="actions actions-plus">
+              <div (click)="plusOne(product)" class="noselect">+</div>
+            </div>
+          </div>
+          <div *ngIf="product.quantity == 0" class="product-cart-button button color-pidy-2 button-large" (click)="addToCart(product)">Agregar</div>
+        </div>
+      </div>
+      <hr />
+    </div>
+    <div class="col-12">
+      <div class="float-right">
+        <a class="navbar-cart" *ngIf="quantity > 0" [routerLink]="['/cart']">
+          Ver carrito
+          <svg class="bi bi-cart2" width="1.25em" height="1.25em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
