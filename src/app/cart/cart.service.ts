@@ -7,7 +7,8 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class CartService {
-  private REST_API_SERVER = 'http://localhost:3000/';
+  // private REST_API_SERVER = 'http://localhost:3000/';
+  private REST_API_SERVER = 'https://pidy-api.herokuapp.com/';
 
   public cartListSubject = new BehaviorSubject([]);
   public toggleCartSubject = new BehaviorSubject(false);
