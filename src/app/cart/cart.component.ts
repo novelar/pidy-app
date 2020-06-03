@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CartBaseComponent } from "./cart-base.component";
+import { CartBaseComponent } from './cart-base.component';
 import { CartService } from './cart.service';
 import { clientMock } from '../common/products/products.mock'
 import { FormBuilder } from '@angular/forms';
@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
-  styleUrls: ["cart.component.scss"],
+  styleUrls: ['cart.component.scss'],
   templateUrl: 'cart.component.html'
 })
 export class CartComponent extends CartBaseComponent {
@@ -27,8 +27,11 @@ export class CartComponent extends CartBaseComponent {
   }
 
   ngOnInit() {
-
+    this.cartService.sendGetRequest().subscribe((data: any[]) => {
+      console.log(data);
+    })
   }
+
   changeQuantity = (cart, quantity) => {
     cart.quantity = quantity;
     this.cartService.reloadCart(this.cartList);

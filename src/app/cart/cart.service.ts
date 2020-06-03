@@ -1,13 +1,24 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Cart } from '../models/cart';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
+  private REST_API_SERVER = 'http://localhost:3000/';
+
   public cartListSubject = new BehaviorSubject([]);
   public toggleCartSubject = new BehaviorSubject(false);
+
+  constructor(
+    private http: HttpClient
+  ) { }
+
+  public sendGetRequest() {
+    return this.http.get(this.REST_API_SERVER + 'api/categories');
+  }
 
   toggleCart = () => {
     this.toggleCartSubject.next(!this.toggleCartSubject.getValue());
