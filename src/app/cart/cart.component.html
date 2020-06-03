@@ -52,12 +52,12 @@
     <div class="cart-buttons">
       <a routerLink="/mystore">Seguir comprando</a>
     </div>
-    <form [formGroup]="checkoutForm" (ngSubmit)="sendOrder(checkoutForm.value)">
+    <form id="clientForm" [formGroup]="clientForm" (ngSubmit)="sendOrder(clientForm.value)">
       <div class="col-12 col-md-7 cart-input input-group mb-3">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="inputGroup-name">Nombre</span>
+          <span class="input-group-text" [ngClass]="{'border-error':nameError==true}" id="inputGroup-name">Nombre</span>
         </div>
-        <input type="text" class="form-control" formControlName="name" aria-describedby="inputGroup-name">
+        <input type="text" class="form-control" formControlName="name" name="name" (keyup)="nameError=false" [ngClass]="{'border-error':nameError==true}" aria-describedby="inputGroup-name">
       </div>
       <div>
         <label class="radio-inline"><input [(ngModel)]="isDelivery" type="radio" [value]="0" name="takeaway" [ngModelOptions]="{standalone: true}">Takeaway</label>
@@ -66,9 +66,9 @@
       <br />
       <div *ngIf="isDelivery == 1" class="col-12 col-md-8 cart-input input-group mb-3">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="inputGroup-address">Dirección</span>
+          <span class="input-group-text" [ngClass]="{'border-error':addressError==true}" id="inputGroup-address">Dirección</span>
         </div>
-        <input type="text" class="form-control" formControlName="address" aria-describedby="inputGroup-address">
+        <input type="text" class="form-control" formControlName="address" name="address" (keyup)="addressError=false" [ngClass]="{'border-error':addressError==true}" aria-describedby="inputGroup-address">
       </div>
       <div *ngIf="isDelivery == 0" class="col-12 col-md-8 cart-input input-group mb-3">
         <label>La dirección del local es: <b>{{client.address}}</b></label>

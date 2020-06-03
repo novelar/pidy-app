@@ -7,18 +7,18 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class CartService {
-  // private REST_API_SERVER = 'http://localhost:3000/';
-  private REST_API_SERVER = 'https://pidy-api.herokuapp.com/';
+  // private REST_API_SERVER = 'http://localhost:3000';
+  private REST_API_SERVER = 'https://pidy-api.herokuapp.com';
 
   public cartListSubject = new BehaviorSubject([]);
   public toggleCartSubject = new BehaviorSubject(false);
 
   constructor(
-    private http: HttpClient
+    private httpClient: HttpClient
   ) { }
 
-  public sendGetRequest() {
-    return this.http.get(this.REST_API_SERVER + 'api/categories');
+  public sendGetRequest(): any {
+    return this.httpClient.get(this.REST_API_SERVER + '/api/categories');
   }
 
   toggleCart = () => {
@@ -45,6 +45,9 @@ export class CartService {
   }
 
   clearCart = () => {
+    let current = this.cartListSubject.getValue();
+    current.forEach(x => x.product.quantity = 0);
+    this.cartListSubject.next(current);
     this.cartListSubject.next([]);
   }
 }

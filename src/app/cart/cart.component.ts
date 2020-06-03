@@ -1,28 +1,30 @@
 import { Component } from '@angular/core';
-import { CartBaseComponent } from './cart-base.component';
+import { CartBaseComponent } from "./cart-base.component";
 import { CartService } from './cart.service';
 import { clientMock } from '../common/products/products.mock'
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
-  styleUrls: ['cart.component.scss'],
+  styleUrls: ["cart.component.scss"],
   templateUrl: 'cart.component.html'
 })
 export class CartComponent extends CartBaseComponent {
-  checkoutForm;
+  clientForm;
   client = clientMock;
   isDelivery = 0;
+  nameError = false;
+  addressError = false;
 
   constructor(
     protected cartService: CartService,
     private formBuilder: FormBuilder,
     private router: Router) {
     super(cartService);
-    this.checkoutForm = this.formBuilder.group({
-      name: '',
-      address: ''
+    this.clientForm = this.formBuilder.group({
+      name: [''],
+      address: [''],
     });
   }
 
@@ -49,30 +51,48 @@ export class CartComponent extends CartBaseComponent {
     if (product.quantity == 0) {
       this.removeFromCart(product);
     }
+
     this.loadCart();
   }
 
   deleteAddress = () => {
-    this.checkoutForm.patchValue({
+    this.clientForm.patchValue({
       address: ''
     });
+
+    this.addressError = false;
   }
 
   sendOrder = (customerData) => {
+    this.nameError = false;
+    this.addressError = false;
+    if (this.clientForm.controls.name.value.length < 4) {
+      this.nameError = true;
+    }
+
+    if (this.isDelivery == 1 && this.clientForm.controls.address.value.length < 4) {
+      this.addressError = true;
+    }
+
+    if (this.addressError || this.nameError) {
+      return;
+    }
+
     var whatsappUrl = "https://wa.me/549" + this.client.phone + "?text=";
     var whatsappText = "Hola! Soy " + customerData.name + ", mi pedido es:%0a%0a";
     this.cartList.forEach((elem) => {
       whatsappText += elem.product.quantity + " x " + elem.product.name + " - $" + elem.product.price * elem.product.quantity + "%0a";
     })
+
     whatsappText += "*Total: $" + this.totalPrice + "*";
-    if (customerData.address != "") {
+    if (customerData.address.trim() != "") {
       whatsappText += "%0a%0aForma de entrega: *DELIVERY*%0aDirección: *" + customerData.address + "*";
     } else {
       whatsappText += "%0a%0aForma de entrega: *RETIRO POR LOCAL*.";
     }
-    console.log(whatsappUrl + whatsappText);
+
     window.open(whatsappUrl + whatsappText, '_blank');
-    this.checkoutForm.reset();
+    this.clientForm.reset();
     this.cartService.clearCart();
     this.router.navigate(['/mystore']);
   }

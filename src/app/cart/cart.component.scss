@@ -1,5 +1,5 @@
 :host {
-  position: fixed;
+  //position: fixed;
   width: 100%;
   height: 100%;
   overflow: auto;
@@ -23,7 +23,7 @@
 
 .cart-page-content {
   max-width: 940px;
-  margin: 30px 70px;
+  margin: 30px 50px;
   background-color: white;
   padding: 20px;
 }
@@ -302,4 +302,8 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.border-error {
+  border-color: darkred;
 }
