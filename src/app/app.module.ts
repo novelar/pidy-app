@@ -16,6 +16,9 @@ import { HomeComponent } from './home/home.component';
 import { MyStoreComponent } from './mystore/mystore.component';
 import { QuantityControlComponent } from './common/quantity-control/quantity-control.component';
 import { CartComponent } from './cart/cart.component';
+import { ProfileComponent } from './profile/profile.component';
+import { AuthGuard } from './auth.guard';
+import { InterceptorService } from './interceptor.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,8 @@ import { CartComponent } from './cart/cart.component';
     ImageUploadComponent,
     ProductComponent,
     SignInComponent,
-    QuantityControlComponent
+    QuantityControlComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -40,10 +44,16 @@ import { CartComponent } from './cart/cart.component';
       { path: 'backoffice', component: BackOfficeComponent },
       { path: 'mystore', component: MyStoreComponent },
       { path: 'sign-in', component: SignInComponent },
-      { path: 'cart', component: CartComponent }
+      { path: 'cart', component: CartComponent },
+      { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] }
     ])
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorService,
+      multi: true
+    },
     ImageService,
     CartService,
     ProductsService

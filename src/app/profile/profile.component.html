@@ -1,0 +1,10 @@
+<p>profile works!</p>
+<pre *ngIf="auth.userProfile$ | async as profile">
+    <code>{{ profile | json }}</code>
+</pre>
+
+<button (click)="pingApi()">Ping API</button>
+
+<pre *ngIf="responseJson">
+<code>{{ responseJson | json }}</code>
+</pre>
